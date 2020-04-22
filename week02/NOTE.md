@@ -1,1 +1,20 @@
 # 每周总结可以写在这里
+
+## 可先参考同学的答案，来完善思路
+### 发现自己思路没有打开，没有联系之前课堂的知识，比如第一、第三道题
+
+## 第二道题重点应该是 utf-8编码的处理方式
+utf-8编码, 先计算出下标的二进制，然后根据它的长度把它们塞到一个特殊序列的二进制中：
+
+	1字节 0xxxxxxx (0-127)
+
+	2字节 110xxxxx 10xxxxxx (128-2047)
+
+	3字节 1110xxxx 10xxxxxx 10xxxxxx (2048-65535)
+
+	4字节 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx (65536-1114111)
+
+	5字节 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+	6字节 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+

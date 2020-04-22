@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // method1 
+        function getUtf8(text) {
+            const code = encodeURIComponent(text);
+            const bytes = [];
+            for (var i = 0; i < code.length; i++) {
+                const c = code.charAt(i);
+                if (c === '%') {
+                    const hex = code.charAt(i + 1) + code.charAt(i + 2);
+                    const hexVal = parseInt(hex, 16);
+                    bytes.push(hexVal);
+                    i += 2;
+                } else bytes.push(c.charCodeAt(0));
+            }
+            return bytes;
+        }
+        console.log(getUtf8("ab"))
+
+        //method2
+        function encodingUtf8(str) {
+            var rs = [];
+            for (var i of str) {
+                var code = i.codePointAt(0);
+                if (code < 128) {
+                    rs.push(code);
+                } else if (code > 127 && code < 2048) {
+                    rs.push((code >> 6) | 192, (code & 63) | 128);
+                } else if (code > 2047 && code < 65536) {
+                    rs.push((code >> 12) | 224, ((code >> 6) & 63) | 128, (code & 63) | 128);
+                } else if (code > 65536 && code < 1114112) {
+                    rs.push((code >> 18) | 240, ((code >> 12) & 63) | 128, ((code >> 6) & 63) | 128, (code & 63) | 128);
+                }
+            }
+            return rs;
+        }
+        console.log(encodingUtf8("ab"))
+    </script>
+</body>
+
+</html>
