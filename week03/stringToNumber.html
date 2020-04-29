@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <script>
+        // 方法一
+        function convertStringToNumber(str, x = 10) {
+            let chars = str.split("");
+            let number = 0;
+            let i = 0;
+            let zeroCode = "0".codePointAt(0);
+            while (i < chars.length && chars[i] != ".") {
+                number = number * x;
+                number += chars[i].codePointAt(0) - zeroCode;
+                i++;
+            }
+            // 十进制小数部分
+            if (chars[i] == ".") {
+                i++;
+            } else {
+                return number;
+            }
+            let decimal = 0;
+            let count = 0;
+            while (i < chars.length && !["e", "E"].includes(chars[i])) {
+                decimal = decimal * x;
+                decimal += chars[i].codePointAt(0) - zeroCode;
+                count++;
+                i++
+            }
+
+            decimal = decimal / (x ** count)
+            number = number + decimal;
+
+            //十进制指数部分
+            if (["e", "E"].includes(chars[i])) {
+                i++
+            } else {
+                return number;
+            }
+
+            let exponential = 0;
+            let sign = "+";
+            if (["-", "+"].includes(chars[i])) {
+                sign = chars[i]
+                i++
+            }
+            while (i < chars.length) {
+                exponential = exponential * x;
+                exponential += chars[i].codePointAt(0) - zeroCode;
+                i++
+            }
+            // 乘法/除法会出现精度问题, 需要优化
+            if(sign=="+"){
+                number = number*(10**exponential);
+            }else if(sign=="-"){
+                number = number/(10**exponential)
+            }
+
+            return number;
+        }
+        console.log(convertStringToNumber("10.23e2"));
+
+        //方法2
+        Number("10e1");
+    </script>
+</body>
+
+</html>
